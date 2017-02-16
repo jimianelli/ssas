@@ -32,7 +32,7 @@ read.outfile.admb<-function(path.string)
 	return(out)
 }
 #' Write and run model configu
-#' Run retrospectives
+#' can do retrospectives
 #' TODO: Insert more information here.
 #'
 #' @param Nretro how many peels to go back
@@ -63,7 +63,10 @@ for (i in 0:Nretro){
     yrs_sel_change," \n" )
     system("./ssas -nox -iprint 100")
   }
-  res[[i+1]] <- read.outfile.admb(paste0(rn,i,".rep"))
+  if (Nretro>0)
+    res[[i+1]] <- read.outfile.admb(paste0(rn,i,".rep"))
+  else
+    res <- read.outfile.admb(paste0(rn,i,".rep"))
 }
 if (keeporig) file.copy("ssas_orig.dat","ssas.dat",overwrite = TRUE)
 return(res)

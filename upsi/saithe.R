@@ -1,9 +1,11 @@
 source("../R/tools.R")
 
 #----------------Run some single runs w/ different selectivity options plot----------------------------
-fit <- Do_Run(Nretro=0,yrs_sel_change=seq(3,55,1))
-fit <- Do_Run(Nretro=0,yrs_sel_change=seq(3,55,25))
-names(fit[[1]])
+fit  <- Do_Run(Nretro=0,yrs_sel_change=seq(3,55,5))
+df <- data.frame(Year=1961:2015,SSB=fit[[1]]$SSB, SSB.sd=fit[[1]]$SSB.sd, Fbar=fit[[1]]$Fbar,Fbar.sd=fit[[1]]$Fbar.sd, rec=fit[[1]]$rec,rec.sd=fit[[1]]$rec.sd )
+
+const <- Do_Run(Nretro=0,yrs_sel_change=seq(3,55,25))
+
 #compute RMSE of surveys
 (mean((log(fit[[1]]$U1obs/fit[[1]]$U1hat))^2))^.5
 (mean((log(fit[[1]]$U2obs/fit[[1]]$U2hat))^2))^.5
@@ -29,7 +31,6 @@ for (i in 2:6){
   timeVary[i] <- Do_Run(Nretro=0,rn="SelTimeVary_",yrs_sel_change=seq(3,55,i))
   df        <- rbind(df,data.frame(Year=1961:2015,selVary=rep(i,55),SSB=timeVary[[i]]$SSB, SSB.sd=timeVary[[i]]$SSB.sd, Fbar=timeVary[[i]]$Fbar,Fbar.sd=timeVary[[i]]$Fbar.sd, rec=timeVary[[i]]$rec,rec.sd=timeVary[[i]]$rec.sd ))
 }
-names(df)
 df$selVary <- as.factor(df$selVary)
 ggplot(df,aes(x=Year,y=SSB,color=selVary)) + geom_line(size=2) + mytheme + ylim(c(0,260))
 

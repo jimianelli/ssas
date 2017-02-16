@@ -20,8 +20,9 @@ for (i in 1:6){
   nsel[i] <- Do_Run(Nretro=0,rn="nSelAges_",nselages=nselages,yrs_sel_change=seq(3,55,5))
   df        <- rbind(df,data.frame(Year=1961:2015,nsel=rep(nselages,55),SSB=nsel[[i]]$SSB, SSB.sd=nsel[[i]]$SSB.sd, Fbar=nsel[[i]]$Fbar,Fbar.sd=nsel[[i]]$Fbar.sd, rec=nsel[[i]]$rec,rec.sd=nsel[[i]]$rec.sd ))
 }
-df$nselages <- as.factor(df$nselages)
-ggplot(df,aes(x=Year,y=SSB,color=nselages)) + geom_line(size=2) + mytheme + 
+names(df)
+df$nsel <- as.factor(df$nsel)
+ggplot(df,aes(x=Year,y=SSB,color=nsel)) + geom_line(size=2) + mytheme + ylim(c(0,260))
 
 #----------------Run a retrospective and plot----------------------------
 retro <- Do_Run(Nretro=10,yrs_sel_change=seq(3,55,5))
